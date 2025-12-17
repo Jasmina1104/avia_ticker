@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyWings - Aviachiptalar onlayn</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner-content">
+            <i class="fas fa-plane"></i>
+            <p>SkyWings yuklanmoqda...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-plane"></i> SkyWings
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html" class="active">Bosh sahifa</a>
+                <a href="flights.html">Parvozlar</a>
+                <a href="#" id="myBookings">Mening buyurtmalarim</a>
+                <a href="#">Yordam</a>
+                <a href="admin/index.html" class="admin-link">Admin</a>
+            </div>
+            
+            <div class="nav-actions">
+                <select class="lang-select">
+                    <option value="uz">O'zbek</option>
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
+                
+                <div class="user-menu">
+                    <button class="btn-login" id="mainLoginBtn">
+                        <i class="fas fa-user"></i> Kirish
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink"><i class="fas fa-user-circle"></i> Profil</a>
+                        <a href="#" id="myTicketsLink"><i class="fas fa-ticket-alt"></i> Mening chiptalarim</a>
+                        <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Sozlamalar</a>
+                        <a href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Chiqish</a>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 id="heroTitle">Dunyoning istalgan nuqtasiga <span class="highlight">oson</span> uchish</h1>
+                <p id="heroSubtitle">Eng yaxshi narxlarda 1000+ kompaniyadan aviachiptalar</p>
+                
+                <div class="search-box">
+                    <div class="search-tabs">
+                        <button class="tab active" data-type="oneway">Bitta yo'nalish</button>
+                        <button class="tab" data-type="roundtrip">Aylanma</button>
+                        <button class="tab" data-type="multicity">Ko'p shahar</button>
+                    </div>
+                    
+                    <form class="search-form" id="searchForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-plane-departure"></i> Qayerdan</label>
+                                <input type="text" placeholder="Shahar yoki aeroport" id="fromInput" required>
+                                <div class="suggestions" id="fromSuggestions"></div>
+                            </div>
+                            
+                            <button type="button" class="swap-btn" id="swapCities">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-plane-arrival"></i> Qayerga</label>
+                                <input type="text" placeholder="Shahar yoki aeroport" id="toInput" required>
+                                <div class="suggestions" id="toSuggestions"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="far fa-calendar"></i> Ketish</label>
+                                <input type="date" id="departureDate" required>
+                            </div>
+                            
+                            <div class="form-group" id="returnDateGroup">
+                                <label><i class="far fa-calendar-check"></i> Qaytish</label>
+                                <input type="date" id="returnDate">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-users"></i> Yo'lovchilar</label>
+                                <div class="passenger-select">
+                                    <input type="text" id="passengerSummary" value="1 kishi, Ekonom" readonly>
+                                    <div class="passenger-dropdown">
+                                        <div class="passenger-type">
+                                            <span>Kattalar (12+)</span>
+                                            <div class="counter">
+                                                <button type="button" class="counter-btn minus" data-type="adults">-</button>
+                                                <span class="count" id="adultsCount">1</span>
+                                                <button type="button" class="counter-btn plus" data-type="adults">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="passenger-type">
+                                            <span>Bolalar (2-11)</span>
+                                            <div class="counter">
+                                                <button type="button" class="counter-btn minus" data-type="children">-</button>
+                                                <span class="count" id="childrenCount">0</span>
+                                                <button type="button" class="counter-btn plus" data-type="children">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="passenger-type">
+                                            <span>Chaqaloqlar (2 yoshgacha)</span>
+                                            <div class="counter">
+                                                <button type="button" class="counter-btn minus" data-type="infants">-</button>
+                                                <span class="count" id="infantsCount">0</span>
+                                                <button type="button" class="counter-btn plus" data-type="infants">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="class-select">
+                                            <button type="button" class="class-btn active" data-class="economy">Ekonom</button>
+                                            <button type="button" class="class-btn" data-class="business">Biznes</button>
+                                            <button type="button" class="class-btn" data-class="first">Birinchi</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="search-btn" id="searchBtn">
+                            <i class="fas fa-search"></i> Parvozlarni qidirish
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rest of the page remains the same... -->
+    <!-- Special Offers, Destinations, Features, Footer -->
+
+    <!-- Modals Container -->
+    <div id="modalsContainer"></div>
+    
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <script src="js/main.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

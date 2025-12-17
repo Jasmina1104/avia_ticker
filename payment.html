@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyWings - To'lov</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        .payment-page {
+            padding: 120px 0 60px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+        
+        .payment-form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .payment-summary-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+        
+        .section-title {
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            font-size: 1.5rem;
+        }
+        
+        .flight-info-summary {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .flight-route {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .route-details {
+            flex: 1;
+        }
+        
+        .route-details h4 {
+            margin: 0 0 5px 0;
+            color: #1e293b;
+        }
+        
+        .route-details p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 2rem;
+        }
+        
+        .payment-method {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .payment-method:hover {
+            border-color: #cbd5e1;
+        }
+        
+        .payment-method.active {
+            border-color: #2563eb;
+            background: rgba(37, 99, 235, 0.05);
+        }
+        
+        .payment-method i {
+            font-size: 24px;
+            color: #475569;
+        }
+        
+        .payment-method.active i {
+            color: #2563eb;
+        }
+        
+        .payment-method .method-info {
+            flex: 1;
+        }
+        
+        .payment-method .method-info h4 {
+            margin: 0 0 5px 0;
+            color: #1e293b;
+        }
+        
+        .payment-method .method-info p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .payment-form {
+            display: none;
+        }
+        
+        .payment-form.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .card-form {
+            margin-top: 2rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            flex: 1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #475569;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .card-input-wrapper {
+            position: relative;
+        }
+        
+        .card-input-wrapper i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+        
+        .price-breakdown {
+            margin-bottom: 2rem;
+        }
+        
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            color: #475569;
+        }
+        
+        .price-item.total {
+            border-top: 2px solid #e2e8f0;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .price-item.total .amount {
+            color: #2563eb;
+        }
+        
+        .promo-section {
+            margin-bottom: 2rem;
+        }
+        
+        .promo-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .promo-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+        }
+        
+        .btn-apply-promo {
+            padding: 12px 24px;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-apply-promo:hover {
+            background: #e2e8f0;
+        }
+        
+        .btn-confirm-payment {
+            width: 100%;
+            padding: 16px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+        
+        .btn-confirm-payment:hover {
+            background: #0da271;
+        }
+        
+        .btn-confirm-payment:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+        
+        .secure-payment {
+            text-align: center;
+            margin-top: 1rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .secure-payment i {
+            color: #10b981;
+            margin-right: 5px;
+        }
+        
+        .passenger-details {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .passenger-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .passenger-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .passenger-item h4 {
+            margin: 0 0 0.5rem 0;
+            color: #1e293b;
+        }
+        
+        .passenger-item p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 992px) {
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-summary-section {
+                position: static;
+            }
+        }
+
+        
+    </style>
+    <style>
+    /* Umumiy modal va notification stylelar */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    }
+    
+    .modal {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        width: 90%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        position: relative;
+    }
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .modal-header h3 {
+        margin: 0;
+        color: #1e293b;
+        font-size: 1.5rem;
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        font-size: 1.2rem;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+    }
+    
+    .modal-close:hover {
+        background: #f1f5f9;
+        color: #475569;
+    }
+    
+    .modal-body {
+        padding: 0;
+    }
+    
+    .btn-primary {
+        padding: 12px 24px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+        background: #1d4ed8;
+    }
+    
+    .btn-secondary {
+        padding: 12px 24px;
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s;
+    }
+    
+    .btn-secondary:hover {
+        background: #e2e8f0;
+    }
+    
+    #notificationContainer {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+    
+    .notification {
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        color: white;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-width: 400px;
+    }
+    
+    .notification.success { background: #10b981; }
+    .notification.error { background: #ef4444; }
+    .notification.info { background: #3b82f6; }
+    .notification.warning { background: #f59e0b; }
+    
+    .notification-close {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes modalSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+    
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+    
+    /* Animatsiyalarni qo'llash */
+    .modal-overlay {
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .modal {
+        animation: modalSlideIn 0.3s ease;
+    }
+    
+    .notification {
+        animation: slideIn 0.3s ease;
+    }
+    
+    @media (max-width: 768px) {
+        .modal {
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+        
+        .modal-footer {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .modal-footer button {
+            width: 100%;
+        }
+    }
+</style>
+   
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner-content">
+            <i class="fas fa-plane"></i>
+            <p>To'lov sahifasi yuklanmoqda...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-plane"></i> SkyWings
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html">Bosh sahifa</a>
+                <a href="flights.html">Parvozlar</a>
+                <a href="#" id="myBookings">Mening buyurtmalarim</a>
+                <a href="#">Yordam</a>
+                <a href="admin/index.html" class="admin-link">Admin</a>
+            </div>
+            
+            <div class="nav-actions">
+                <select class="lang-select">
+                    <option value="uz">O'zbek</option>
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
+                
+                <div class="user-menu">
+                    <button class="btn-login" id="mainLoginBtn">
+                        <i class="fas fa-user"></i> Kirish
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="#" id="profileLink"><i class="fas fa-user-circle"></i> Profil</a>
+                        <a href="#" id="myTicketsLink"><i class="fas fa-ticket-alt"></i> Mening chiptalarim</a>
+                        <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Sozlamalar</a>
+                        <a href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Chiqish</a>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Payment Page -->
+    <section class="payment-page">
+        <div class="container">
+            <div class="payment-container">
+                <!-- Payment Form -->
+                <div class="payment-form-section">
+                    <h2 class="section-title">To'lov usulini tanlang</h2>
+                    
+                    <!-- Flight Info -->
+                    <div class="flight-info-summary" id="flightSummary">
+                        <!-- Flight info will be loaded here -->
+                    </div>
+                    
+                    <!-- Passenger Details -->
+                    <div class="passenger-details" id="passengerDetails">
+                        <!-- Passenger details will be loaded here -->
+                    </div>
+                    
+                    <!-- Payment Methods -->
+                    <div class="payment-methods">
+                        <div class="payment-method active" data-method="card">
+                            <i class="fas fa-credit-card"></i>
+                            <div class="method-info">
+                                <h4>Karta orqali to'lash</h4>
+                                <p>Visa, MasterCard, Humo, UzCard</p>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-method" data-method="payme">
+                            <i class="fas fa-wallet"></i>
+                            <div class="method-info">
+                                <h4>Payme</h4>
+                                <p>Payme to'lov tizimi orqali</p>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-method" data-method="click">
+                            <i class="fas fa-mobile-alt"></i>
+                            <div class="method-info">
+                                <h4>Click</h4>
+                                <p>Click to'lov tizimi orqali</p>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-method" data-method="cash">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div class="method-info">
+                                <h4>Naqd pul</h4>
+                                <p>Bank yoki ofisda naqd to'lov</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Card Payment Form -->
+                    <div class="payment-form active" id="cardForm">
+                        <div class="card-form">
+                            <div class="form-group">
+                                <label>Karta raqami</label>
+                                <div class="card-input-wrapper">
+                                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Amal qilish muddati</label>
+                                    <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label>CVV</label>
+                                    <input type="password" id="cardCvv" placeholder="123" maxlength="3">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Karta egasi</label>
+                                <input type="text" id="cardHolder" placeholder="ISM FAMILIYA">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payme Form -->
+                    <div class="payment-form" id="paymeForm">
+                        <div style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-wallet" style="font-size: 48px; color: #2563eb; margin-bottom: 1rem;"></i>
+                            <h3>Payme orqali to'lash</h3>
+                            <p style="color: #64748b; margin-bottom: 1rem;">
+                                To'lovni amalga oshirish uchun Payme tizimiga yo'naltirilishingiz kerak
+                            </p>
+                            <button class="btn-primary" id="redirectToPayme" style="padding: 12px 24px;">
+                                Payme ga o'tish
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Click Form -->
+                    <div class="payment-form" id="clickForm">
+                        <div style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-mobile-alt" style="font-size: 48px; color: #2563eb; margin-bottom: 1rem;"></i>
+                            <h3>Click orqali to'lash</h3>
+                            <p style="color: #64748b; margin-bottom: 1rem;">
+                                Click ilovasini oching va to'lovni amalga oshiring
+                            </p>
+                            <div class="form-group" style="text-align: left;">
+                                <label>Telefon raqami</label>
+                                <input type="tel" id="clickPhone" placeholder="+998 90 123 45 67">
+                            </div>
+                            <button class="btn-primary" id="processClick" style="padding: 12px 24px;">
+                                Tasdiqlash kodini olish
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Cash Form -->
+                    <div class="payment-form" id="cashForm">
+                        <div style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-money-bill-wave" style="font-size: 48px; color: #2563eb; margin-bottom: 1rem;"></i>
+                            <h3>Naqd to'lov</h3>
+                            <p style="color: #64748b; margin-bottom: 1rem;">
+                                To'lovni SkyWings ofislarida naqd pul bilan amalga oshirishingiz mumkin
+                            </p>
+                            <div style="background: #f8fafc; border-radius: 8px; padding: 1rem; text-align: left; margin-bottom: 1rem;">
+                                <h4 style="margin: 0 0 0.5rem 0;">Bizning ofislar:</h4>
+                                <p style="margin: 0 0 0.5rem 0;">📍 Toshkent sh., Yunusobod t.</p>
+                                <p style="margin: 0 0 0.5rem 0;">📍 Toshkent sh., Mirzo Ulug'bek t.</p>
+                                <p style="margin: 0;">📍 Samarqand sh., Registon maydoni</p>
+                            </div>
+                            <p style="color: #64748b; font-size: 0.9rem;">
+                                Naqd to'lovni tanlaganingizda, chipta elektron pochta orqali yuboriladi
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Summary -->
+                <div class="payment-summary-section">
+                    <h2 class="section-title">To'lov hisobi</h2>
+                    
+                    <div class="price-breakdown">
+                        <div class="price-item">
+                            <span>Chipta narxi</span>
+                            <span class="amount" id="ticketPrice">$350</span>
+                        </div>
+                        <div class="price-item">
+                            <span>Xizmat xaqqi</span>
+                            <span class="amount" id="serviceFee">$15</span>
+                        </div>
+                        <div class="price-item">
+                            <span>Aeroport yig'imi</span>
+                            <span class="amount" id="airportTax">$25</span>
+                        </div>
+                        <div class="price-item" id="discountItem" style="display: none;">
+                            <span>Chegirma</span>
+                            <span class="amount" style="color: #10b981;" id="discountAmount">-$35</span>
+                        </div>
+                        <div class="price-item total">
+                            <span>Jami to'lov</span>
+                            <span class="amount" id="totalAmount">$390</span>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-section">
+                        <h4 style="margin-bottom: 1rem; color: #475569;">Promo kod</h4>
+                        <div class="promo-input">
+                            <input type="text" id="promoCode" placeholder="Promo kodni kiriting">
+                            <button class="btn-apply-promo" id="applyPromo">Qo'llash</button>
+                        </div>
+                        <div id="promoMessage" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
+                    </div>
+                    
+                    <button class="btn-confirm-payment" id="confirmPayment">
+                        <i class="fas fa-lock"></i> To'lovni tasdiqlash
+                    </button>
+                    
+                    <div class="secure-payment">
+                        <i class="fas fa-shield-alt"></i>
+                        To'lov ma'lumotlaringiz xavfsiz
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modals Container -->
+    <div id="modalsContainer"></div>
+    
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Scriptlar bodyning oxirida -->
+<script src="js/auth.js"></script>
+<script src="js/payment.js"></script>
+</body>
+</html>
